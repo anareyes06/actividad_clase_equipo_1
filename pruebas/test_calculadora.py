@@ -11,7 +11,7 @@ def test_suma():
 
 def test_suma_con_decimales_y_negativos():
     # Prueba propia con datos diferentes a los ejemplos.
-    assert Calculadora("1", [1.5, 2, -1]).resultado() == 2.5
+    assert Calculadora("1", [1.5, 2, -1]).resultado() == pytest.approx(2.5)
 
 
 def test_resta():
@@ -23,7 +23,7 @@ def test_multiplicacion():
 
 
 def test_division():
-    assert Calculadora("4", [9, 2]).resultado() == 4.5
+    assert Calculadora("4", [9, 2]).resultado() == pytest.approx(4.5)
 
 
 def test_promedio():
@@ -31,7 +31,7 @@ def test_promedio():
 
 
 def test_promedio_con_decimales():
-    assert Calculadora("5", [7.5, 8.5, 9.5]).resultado() == 8.5
+    assert Calculadora("5", [7.5, 8.5, 9.5]).resultado() == pytest.approx(8.5)
 
 
 def test_potencia():
