@@ -1,7 +1,31 @@
+import math
+
+
 class Calculadora:
     def __init__(self, operacion, numeros):
+        # Se validan los datos antes de realizar cualquier cálculo.
+        operaciones_validas = {str(i) for i in range(1, 9)}
+
+        if operacion not in operaciones_validas:
+            raise ValueError("La operación seleccionada no es válida.")
+
+        if not isinstance(numeros, (list, tuple)) or not numeros:
+            raise ValueError("Debes ingresar al menos un número.")
+
+        if operacion in {"2", "4", "6"} and len(numeros) != 2:
+            raise ValueError("Esta operación requiere exactamente dos números.")
+
+        for numero in numeros:
+            if (
+                isinstance(numero, bool)
+                or not isinstance(numero, (int, float))
+                or not math.isfinite(numero)
+            ):
+                raise ValueError("Todos los valores deben ser números válidos.")
+
         self.operacion = operacion
-        self.numeros = numeros
+        # Se guarda una copia para evitar modificaciones externas.
+        self.numeros = list(numeros)
 
     def suma(self):
         return sum(self.numeros)
@@ -33,7 +57,7 @@ class Calculadora:
         return min(self.numeros)
 
     def resultado(self):
-        # Se elige el método según la operación guardada.
+        # Cada opción del menú se relaciona con su método.
         operaciones = {
             "1": self.suma,
             "2": self.resta,
@@ -44,9 +68,14 @@ class Calculadora:
             "7": self.mayor,
             "8": self.menor,
         }
-        if self.operacion not in operaciones:
-            raise ValueError("La operación seleccionada no es válida.")
-        return operaciones[self.operacion]()
+
+        respuesta = operaciones[self.operacion]()
+
+        # Evita devolver resultados complejos o infinitos.
+        if isinstance(respuesta, complex) or not math.isfinite(respuesta):
+            raise ValueError("El resultado matemático no es válido.")
+
+        return respuesta
 
 
 def pedir_numero(mensaje):
